@@ -1,0 +1,189 @@
+<style>
+*{margin:0;padding:0}
+html,body,#root{
+    width:100%;
+    height:100%;
+
+}
+#root{
+    display:flex;
+    
+}
+.menu{
+    height:100%;
+    width: 200px;
+    background-color: #043f70;
+    
+    transition:all 1s;
+}
+.menu ul li{
+    width: 100%;
+    height:50px;
+    color:white;
+    font-size:20px;
+    text-align: center;
+    box-sizing:border-box;
+}
+.menu ul li:hover{
+    color:sienna;
+    cursor: pointer;
+}
+.main{
+    flex:1;
+    display:flex;
+    flex-direction: column;
+    
+
+}
+.top{
+    height: 50px;
+    background-color: blanchedalmond;
+    line-height:50px;
+    font-size:18px;
+}
+.content{
+    flex:1;
+    background-color:#ccc;
+}
+.main i{
+    font-size:25px !important;
+}
+.content>div{
+    /* position:absolute; */
+    width:80%;
+    margin:30px auto;
+    background-color:#fff;
+    /* padding:100px 0; */
+    height:60%;
+    
+}
+.icon-shuanglieliebiao{
+    color:#fff;
+    height:20px;
+    width: 20px;
+}
+</style>
+<link rel="stylesheet" href="//at.alicdn.com/t/font_3222771_pg4fd5pvizg.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1">
+
+<div id="root">
+    <div class="menu" ref='menu'>
+        <ul>
+            <li @click="who='index'">
+                <i class='iconfont icon-shuanglieliebiao'></i>
+                {{menuwid=='200px'?'后台首页':''}}
+            </li>
+            <li @click="who='goods'">
+                <i class='iconfont icon-shuanglieliebiao'></i>
+                {{menuwid=='200px'?'商品管理':''}}
+            </li>
+            <li @click="who='orders'">
+                <i class='iconfont icon-shuanglieliebiao'></i>
+                {{menuwid=='200px'?'订单管理':''}}
+            </li>
+            <li @click="who='users'">
+                <i class='iconfont icon-shuanglieliebiao'></i>
+                {{menuwid=='200px'?'用户管理':''}}
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <div class="top">
+            <i :class='classArr' @click='clickFn'></i>
+
+            <span style="display:inline-block">后台&gt;</span>
+            <span v-for="item in [
+                { id:1,url:'index',title:'首页',child:'欢迎页' },
+                { id:2,url:'goods',title:'商品管理',child:'列表' },
+                { id:3,url:'orders',title:'订单管理',child:'列表' },
+                { id:4,url:'users',title:'用户管理',child:'列表' },
+                ]"
+                
+                v-if="who==item.url"
+                class="animated fadeInRight"
+                style="display:inline-block"
+                >
+                {{item.title}}&gt;{{item.child}}
+            </span>
+        </div>
+        <div class="content">
+            <transition
+            enter-active-class="animated fadeInRight"
+            >
+                <component :is='who'></component>
+            </transition>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+Vue.component('index',{
+    template:`
+    <div>
+        <fieldset>
+        <legend>后台首页</legend>
+        <h1>后台首页</h1>
+        </fieldset>
+    </div>
+    `
+})
+
+Vue.component('goods',{
+    template:`<div>
+        <fieldset>
+        <legend>商品管理</legend>
+        <h1>商品管理</h1>
+        </fieldset>
+    </div>
+    `
+})
+
+Vue.component('orders',{
+    template:`<div>
+        <fieldset>
+        <legend>订单管理</legend>
+        <h1>订单管理</h1>
+        </fieldset>
+    </div>
+    `
+})
+
+Vue.component('users',{
+    template:`<div>
+        <fieldset>
+        <legend>用户管理</legend>
+        <h1>用户管理</h1>
+        </fieldset>
+    </div>
+    `
+})
+
+const vm = new Vue({
+    el: "#root",
+    data: {
+        who:'index',
+        classArr:['iconfont','icon-shouqicaidan'],
+        menuwid:'200px'
+    },
+    methods:{
+        clickFn(){
+            if(this.classArr.indexOf('icon-shouqicaidan')!=-1){
+                this.classArr.pop()
+                this.classArr.push('icon-zhankaicaidan')
+                this.$refs.menu.style.width='64px'
+                this.menuwid='64px'
+            }else{
+                this.classArr.pop()
+                this.classArr.push('icon-shouqicaidan')
+                this.$refs.menu.style.width='200px'
+                this.menuwid='200px'
+            }
+        }
+    },
+    computed:{
+        menuShouCp(){
+            return this.menuwid=='200px'?'首页':''
+        }
+    }
+})
+</script>
